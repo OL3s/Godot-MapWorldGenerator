@@ -1,8 +1,17 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="PackedScene" path="res://world.tscn" id="1_world"]
 [ext_resource type="Script" path="res://CameraController.cs" id="2_camera"]
 [ext_resource type="Script" path="res://Main.cs" id="3_main"]
+[ext_resource type="Texture2D" path="res://assets/icons/map_size_32.svg" id="4_size32"]
+[ext_resource type="Texture2D" path="res://assets/icons/map_size_64.svg" id="5_size64"]
+[ext_resource type="Texture2D" path="res://assets/icons/map_size_128.svg" id="6_size128"]
+[ext_resource type="Texture2D" path="res://assets/icons/clear_map.svg" id="7_clear"]
+[ext_resource type="Texture2D" path="res://assets/icons/statistics.svg" id="8_stats"]
+[ext_resource type="PackedScene" path="res://stats_panel.tscn" id="9_stats_panel"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/toolbar_panel.tres" id="10_toolbar_panel"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/action_button.tres" id="11_action_button"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/action_button_hover.tres" id="12_action_button_hover"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("3_main")
@@ -16,33 +25,80 @@ script = ExtResource("2_camera")
 
 [node name="ControllerUI" type="CanvasLayer" parent="."]
 
-[node name="TopUI" type="HBoxContainer" parent="ControllerUI"]
+[node name="TopUI" type="PanelContainer" parent="ControllerUI"]
 anchors_preset = 10
 anchor_right = 1.0
-offset_right = 0.0
-offset_bottom = 40.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 52.0
+theme_override_styles/panel = ExtResource("10_toolbar_panel")
+
+[node name="TopUIMargin" type="MarginContainer" parent="ControllerUI/TopUI"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
+
+[node name="TopUIContent" type="HBoxContainer" parent="ControllerUI/TopUI/TopUIMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CreateMapControls" type="HBoxContainer" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent"]
+layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="MapSizeButtons" type="HBoxContainer" parent="ControllerUI/TopUI"]
+[node name="CreateMapLabel" type="Label" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent/CreateMapControls"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.839216, 0.894118, 0.972549, 1)
+text = "Create Map"
+vertical_alignment = 1
+
+[node name="MapSizeButtons" type="HBoxContainer" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent/CreateMapControls"]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="Generate32Button" type="Button" parent="ControllerUI/TopUI/MapSizeButtons"]
+[node name="GenerateSmallButton" type="Button" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent/CreateMapControls/MapSizeButtons"]
+custom_minimum_size = Vector2(116, 0)
 layout_mode = 2
-text = "32"
+theme_override_styles/normal = ExtResource("11_action_button")
+theme_override_styles/hover = ExtResource("12_action_button_hover")
+text = "Small"
+icon = ExtResource("4_size32")
 
-[node name="Generate64Button" type="Button" parent="ControllerUI/TopUI/MapSizeButtons"]
+[node name="GenerateNormalButton" type="Button" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent/CreateMapControls/MapSizeButtons"]
+custom_minimum_size = Vector2(116, 0)
 layout_mode = 2
-text = "64"
+theme_override_styles/normal = ExtResource("11_action_button")
+theme_override_styles/hover = ExtResource("12_action_button_hover")
+text = "Normal"
+icon = ExtResource("5_size64")
 
-[node name="Generate128Button" type="Button" parent="ControllerUI/TopUI/MapSizeButtons"]
+[node name="GenerateLargeButton" type="Button" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent/CreateMapControls/MapSizeButtons"]
+custom_minimum_size = Vector2(116, 0)
 layout_mode = 2
-text = "128"
+theme_override_styles/normal = ExtResource("11_action_button")
+theme_override_styles/hover = ExtResource("12_action_button_hover")
+text = "Large"
+icon = ExtResource("6_size128")
 
-[node name="TopUISpacer" type="Control" parent="ControllerUI/TopUI"]
+[node name="ClearMapButton" type="Button" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("11_action_button")
+theme_override_styles/hover = ExtResource("12_action_button_hover")
+text = "Clear Map"
+icon = ExtResource("7_clear")
+
+[node name="TopUISpacer" type="Control" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ClearMapButton" type="Button" parent="ControllerUI/TopUI"]
+[node name="ShowStatisticsButton" type="Button" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent"]
 layout_mode = 2
-text = "Clear Map"
+theme_override_styles/normal = ExtResource("11_action_button")
+theme_override_styles/hover = ExtResource("12_action_button_hover")
+text = "Show Statistics"
+icon = ExtResource("8_stats")
+
+[node name="StatsPanel" parent="." instance=ExtResource("9_stats_panel")]

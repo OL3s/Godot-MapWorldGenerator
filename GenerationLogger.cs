@@ -7,21 +7,44 @@ public static class GenerationLogger
 {
 	public static void PrintGenerationLog(int width, int height, float[,] noiseMap, int[,] heightMap, int[,] resourceMap)
 	{
-		int chunkSize = GetGenerationLogChunkSize(width, height);
+		GD.Print(BuildGenerationLog(BuildGenerationStats(width, height, noiseMap, heightMap, resourceMap)));
+	}
+
+	public static string BuildGenerationLog(int width, int height, float[,] noiseMap, int[,] heightMap, int[,] resourceMap)
+	{
+		return BuildGenerationLog(BuildGenerationStats(width, height, noiseMap, heightMap, resourceMap));
+	}
+
+	public static GenerationStats BuildGenerationStats(int width, int height, float[,] noiseMap, int[,] heightMap, int[,] resourceMap)
+	{
+		GenerationStats stats = new GenerationStats();
+		stats.Width = width;
+		stats.Height = height;
+		stats.ChunkSize = GetGenerationLogChunkSize(width, height);
+
+		AppendFloatChunkAverages(stats, noiseMap, stats.ChunkSize);
+		AppendIntGridSummary(stats.HeightStats, heightMap, typeof(DictionaryTileset.GenerateHeightType));
+		AppendIntGridSummary(stats.ResourceStats, resourceMap, typeof(DictionaryTileset.GenerateResourceType));
+
+		return stats;
+	}
+
+	public static string BuildGenerationLog(GenerationStats stats)
+	{
 		StringBuilder output = new StringBuilder();
 
 		output.AppendLine("==! GENERATION LOGGER !==");
 		output.AppendLine();
 		output.AppendLine("== DETAILS ==");
-		output.AppendLine("Map size: " + width + "x" + height);
-		output.AppendLine("Chunk size: " + chunkSize + "x" + chunkSize);
+		output.AppendLine("Map size: " + stats.Width + "x" + stats.Height);
+		output.AppendLine("Chunk size: " + stats.ChunkSize + "x" + stats.ChunkSize);
 		output.AppendLine();
 
-		AppendFloatChunkAverages(output, noiseMap, "Noice Map Chunk Averages", chunkSize);
-		AppendIntGridSummary(output, heightMap, "Height Map Summary", typeof(DictionaryTileset.GenerateHeightType));
-		AppendIntGridSummary(output, resourceMap, "Resource Map Summary", typeof(DictionaryTileset.GenerateResourceType));
+		AppendFloatChunkAveragesLog(output, stats, "Noise Map Chunk Averages");
+		AppendIntGridSummaryLog(output, stats.HeightStats, "Height Map Summary");
+		AppendIntGridSummaryLog(output, stats.ResourceStats, "Resource Map Summary");
 
-		GD.Print(output.ToString());
+		return output.ToString();
 	}
 
 	private static int GetGenerationLogChunkSize(int width, int height)
@@ -30,12 +53,8 @@ public static class GenerationLogger
 		return Math.Max(1, (int)Math.Ceiling(Math.Max(width, height) / (float)targetChunkCount));
 	}
 
-	private static void AppendFloatChunkAverages(StringBuilder output, float[,] grid, string header, int chunkSize)
+	private static void AppendFloatChunkAverages(GenerationStats stats, float[,] grid, int chunkSize)
 	{
-		output.AppendLine("== " + header + " ==");
-		List<float> chunkAverages = new List<float>();
-		int chunkColumns = 0;
-
 		for(var chunkY = 0; chunkY < grid.GetLength(1); chunkY += chunkSize)
 		{
 			int currentChunkColumns = 0;
@@ -54,23 +73,31 @@ public static class GenerationLogger
 					}
 
 				float average = total / count;
-				chunkAverages.Add(average);
+				stats.NoiseChunkAverages.Add(average);
 				currentChunkColumns++;
-
-				output.Append(average.ToString("0.00"));
-				output.Append(" ");
 			}
 
-			chunkColumns = Math.Max(chunkColumns, currentChunkColumns);
-			output.AppendLine();
+			stats.NoiseColumns = Math.Max(stats.NoiseColumns, currentChunkColumns);
 		}
+	}
 
-		output.AppendLine();
-		output.AppendLine("== " + header + " Visual ==");
-		for(var i = 0; i < chunkAverages.Count; i++)
+	private static void AppendFloatChunkAveragesLog(StringBuilder output, GenerationStats stats, string header)
+	{
+		output.AppendLine("== " + header + " ==");
+		for(var i = 0; i < stats.NoiseChunkAverages.Count; i++)
 		{
-			output.Append(GetFillChar(chunkAverages[i]));
-			if((i + 1) % chunkColumns == 0)
+			output.Append(stats.NoiseChunkAverages[i].ToString("0.00"));
+			output.Append(" ");
+			if((i + 1) % stats.NoiseColumns == 0)
+				output.AppendLine();
+		}
+		output.AppendLine();
+
+		output.AppendLine("== " + header + " Visual ==");
+		for(var i = 0; i < stats.NoiseChunkAverages.Count; i++)
+		{
+			output.Append(GetFillChar(stats.NoiseChunkAverages[i]));
+			if((i + 1) % stats.NoiseColumns == 0)
 				output.AppendLine();
 		}
 
@@ -84,7 +111,7 @@ public static class GenerationLogger
 		return fillChars[index];
 	}
 
-	private static void AppendIntGridSummary(StringBuilder output, int[,] grid, string header, Type enumType)
+	private static void AppendIntGridSummary(List<GenerationStatEntry> entries, int[,] grid, Type enumType)
 	{
 		Dictionary<int, int> counts = new Dictionary<int, int>();
 		int totalTiles = grid.GetLength(0) * grid.GetLength(1);
@@ -99,14 +126,19 @@ public static class GenerationLogger
 				counts[value]++;
 			}
 
-		output.AppendLine("== " + header + " ==");
 		foreach(int value in Enum.GetValues(enumType))
 		{
 			int count = counts.GetValueOrDefault(value, 0);
 			float percent = (float)count / totalTiles * 100.0f;
-			output.AppendLine(Enum.GetName(enumType, value) + ": " + count + " (" + percent.ToString("0.0") + "%)");
+			entries.Add(new GenerationStatEntry { Name = Enum.GetName(enumType, value) ?? value.ToString(), Count = count, Percent = percent });
 		}
+	}
 
+	private static void AppendIntGridSummaryLog(StringBuilder output, List<GenerationStatEntry> entries, string header)
+	{
+		output.AppendLine("== " + header + " ==");
+		foreach(GenerationStatEntry entry in entries)
+			output.AppendLine(entry.Name + ": " + entry.Count + " (" + entry.Percent.ToString("0.0") + "%)");
 		output.AppendLine();
 	}
 }

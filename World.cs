@@ -4,11 +4,11 @@ public partial class World : Node2D
 {
 	private TileMapLayer heightLayer;
 	private TileMapLayer resourceLayer;
+	private GenerationStats latestStats;
 
 	public override void _Ready()
 	{
 		BuildTileMapLayers();
-		GenerateMap(64, 64);
 	}
 
 	public void GenerateMap(int width, int height)
@@ -23,12 +23,19 @@ public partial class World : Node2D
 
 		TileMapDrawer.DrawMapToTileMapLayer(heightLayer, heightMap, DictionaryTileset.HeightMapAtlas, true);
 		TileMapDrawer.DrawMapToTileMapLayer(resourceLayer, resourceMap, DictionaryTileset.ResourceMapAtlas, false);
+		latestStats = GenerationLogger.BuildGenerationStats(width, height, floorNoiseMap, heightMap, resourceMap);
 	}
 
 	public void ClearMap()
 	{
 		heightLayer?.Clear();
 		resourceLayer?.Clear();
+		latestStats = null;
+	}
+
+	public GenerationStats GetGenerationStats()
+	{
+		return latestStats;
 	}
 
 	private void BuildTileMapLayers()
