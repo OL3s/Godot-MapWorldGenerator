@@ -5,8 +5,8 @@ public static class DictionaryTileset
 {
     public static Dictionary<int, Vector2I> HeightMapAtlas = new Dictionary<int, Vector2I>() {
         { (int)GenerateHeightType.None,         new Vector2I(0, 0) }, 
-        { (int)GenerateHeightType.DeepWater,    new Vector2I(1, 0) }, 
-        { (int)GenerateHeightType.ShallowWater, new Vector2I(2, 0) }, 
+        { (int)GenerateHeightType.Ocean,        new Vector2I(1, 0) }, 
+        { (int)GenerateHeightType.Water,        new Vector2I(2, 0) }, 
         { (int)GenerateHeightType.Shore,        new Vector2I(3, 0) }, 
         { (int)GenerateHeightType.Land,         new Vector2I(0, 1) }, 
         { (int)GenerateHeightType.Mountain,     new Vector2I(2, 1) }, 
@@ -21,8 +21,8 @@ public static class DictionaryTileset
 
     public enum GenerateHeightType {
         None = 0,
-        DeepWater = 1,
-        ShallowWater = 2,
+        Ocean = 1,
+        Water = 2,
         Shore = 3,
         Land = 4,
         Mountain = 5,

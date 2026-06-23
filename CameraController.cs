@@ -7,17 +7,26 @@ public partial class CameraController : Camera2D
 	[Export] public float MinZoom = 0.25f;
 	[Export] public float MaxZoom = 4.0f;
 
+	private Vector2 startPosition;
+	private Vector2 startZoom;
+
+	public override void _Ready()
+	{
+		startPosition = Position;
+		startZoom = Zoom;
+	}
+
 	public override void _Process(double delta)
 	{
 		Vector2 direction = Vector2.Zero;
 
-		if(Input.IsActionPressed("ui_left"))
+		if(Input.IsActionPressed("ui_left") || Input.IsActionPressed("camera_left"))
 			direction.X -= 1;
-		if(Input.IsActionPressed("ui_right"))
+		if(Input.IsActionPressed("ui_right") || Input.IsActionPressed("camera_right"))
 			direction.X += 1;
-		if(Input.IsActionPressed("ui_up"))
+		if(Input.IsActionPressed("ui_up") || Input.IsActionPressed("camera_up"))
 			direction.Y -= 1;
-		if(Input.IsActionPressed("ui_down"))
+		if(Input.IsActionPressed("ui_down") || Input.IsActionPressed("camera_down"))
 			direction.Y += 1;
 
 		if(direction != Vector2.Zero)
@@ -39,5 +48,11 @@ public partial class CameraController : Camera2D
 	{
 		float clampedZoom = Mathf.Clamp(zoom, MinZoom, MaxZoom);
 		Zoom = new Vector2(clampedZoom, clampedZoom);
+	}
+
+	public void ResetCamera()
+	{
+		Position = startPosition;
+		Zoom = startZoom;
 	}
 }

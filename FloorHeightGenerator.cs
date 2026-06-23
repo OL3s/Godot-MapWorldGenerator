@@ -13,9 +13,9 @@ public static class FloorHeightGenerator
 				float value = noiseMap[x, y];
 
 				if(value < 0.22f)
-					heightMap[x, y] = (int)DictionaryTileset.GenerateHeightType.DeepWater;
+					heightMap[x, y] = (int)DictionaryTileset.GenerateHeightType.Ocean;
 				else if(value < 0.34f)
-					heightMap[x, y] = (int)DictionaryTileset.GenerateHeightType.ShallowWater;
+					heightMap[x, y] = (int)DictionaryTileset.GenerateHeightType.Water;
 				else if(value < 0.44f)
 					heightMap[x, y] = (int)DictionaryTileset.GenerateHeightType.Shore;
 				else if(value < 0.72f)
