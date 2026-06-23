@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://world.tscn" id="1_world"]
+[ext_resource type="Script" path="res://CameraController.cs" id="2_camera"]
+[ext_resource type="Script" path="res://Main.cs" id="3_main"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("3_main")
+
+[node name="World" parent="." instance=ExtResource("1_world")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(256, 256)
+enabled = true
+script = ExtResource("2_camera")
+
+[node name="ControllerUI" type="CanvasLayer" parent="."]
+
+[node name="TopUI" type="HBoxContainer" parent="ControllerUI"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = 0.0
+offset_bottom = 40.0
+theme_override_constants/separation = 8
+
+[node name="MapSizeButtons" type="HBoxContainer" parent="ControllerUI/TopUI"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Generate32Button" type="Button" parent="ControllerUI/TopUI/MapSizeButtons"]
+layout_mode = 2
+text = "32"
+
+[node name="Generate64Button" type="Button" parent="ControllerUI/TopUI/MapSizeButtons"]
+layout_mode = 2
+text = "64"
+
+[node name="Generate128Button" type="Button" parent="ControllerUI/TopUI/MapSizeButtons"]
+layout_mode = 2
+text = "128"
+
+[node name="TopUISpacer" type="Control" parent="ControllerUI/TopUI"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ClearMapButton" type="Button" parent="ControllerUI/TopUI"]
+layout_mode = 2
+text = "Clear Map"

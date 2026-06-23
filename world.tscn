@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://d2ldvpmxfxrty"]
+
+[ext_resource type="Script" uid="uid://cvbgoxa0d6lth" path="res://World.cs" id="1_f3sb7"]
+
+[sub_resource type="TileSet" id="TileSet_f3sb7"]
+
+[sub_resource type="TileSet" id="TileSet_fj7yv"]
+
+[node name="Node" type="Node2D" unique_id=448045538]
+script = ExtResource("1_f3sb7")
+
+[node name="HeightLayer" type="TileMapLayer" parent="." unique_id=2086063751]
+tile_set = SubResource("TileSet_f3sb7")
+
+[node name="ResourceLayer" type="TileMapLayer" parent="." unique_id=2102890749]
+tile_set = SubResource("TileSet_fj7yv")
