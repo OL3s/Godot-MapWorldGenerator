@@ -6,9 +6,9 @@ The next major generator feature is biome generation.
 
 The current map already behaves like a basic plains-style island. The next step is to split the generated land into broad biome zones based on vertical map position:
 
-- Bottom area: desert biome
-- Center area: plains biome
-- Top area: tundra biome
+- Bottom 30%: desert biome
+- Center 40%: plains biome, matching the current default look
+- Top 30%: tundra biome
 
 ## Intended Direction
 
@@ -18,9 +18,9 @@ The biome layer should influence visuals and spawning rules without replacing th
 
 ## First Biome Set
 
-- Desert: lower part of the map
-- Plains: middle part of the map, matching the current default look
-- Tundra: upper part of the map
+- Desert: bottom 30% of the map
+- Plains: middle 40% of the map, matching the current default look
+- Tundra: top 30% of the map
 
 ## Notes
 
