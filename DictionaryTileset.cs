@@ -8,10 +8,8 @@ public static class DictionaryTileset
         { (int)GenerateHeightType.DeepWater,    new Vector2I(1, 0) }, 
         { (int)GenerateHeightType.ShallowWater, new Vector2I(2, 0) }, 
         { (int)GenerateHeightType.Shore,        new Vector2I(3, 0) }, 
-        { (int)GenerateHeightType.Lowland,      new Vector2I(0, 1) }, 
-        { (int)GenerateHeightType.Highland,     new Vector2I(1, 1) }, 
+        { (int)GenerateHeightType.Land,         new Vector2I(0, 1) }, 
         { (int)GenerateHeightType.Mountain,     new Vector2I(2, 1) }, 
-        { (int)GenerateHeightType.SnowPeak,     new Vector2I(3, 1) }, 
     };
     public static Dictionary<int, Vector2I> ResourceMapAtlas = new Dictionary<int, Vector2I>() {
         { (int)GenerateResourceType.None,       new Vector2I(0, 0) }, 
@@ -26,10 +24,8 @@ public static class DictionaryTileset
         DeepWater = 1,
         ShallowWater = 2,
         Shore = 3,
-        Lowland = 4,
-        Highland = 5,
-        Mountain = 6,
-        SnowPeak = 7,
+        Land = 4,
+        Mountain = 5,
     }
 
     public enum GenerateResourceType {
