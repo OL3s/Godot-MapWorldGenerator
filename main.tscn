@@ -60,7 +60,7 @@ layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="GenerateSmallButton" type="Button" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent/CreateMapControls/MapSizeButtons"]
-custom_minimum_size = Vector2(116, 0)
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 theme_override_styles/normal = ExtResource("11_action_button")
 theme_override_styles/hover = ExtResource("12_action_button_hover")
@@ -68,7 +68,7 @@ text = "Small"
 icon = ExtResource("4_size32")
 
 [node name="GenerateNormalButton" type="Button" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent/CreateMapControls/MapSizeButtons"]
-custom_minimum_size = Vector2(116, 0)
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 theme_override_styles/normal = ExtResource("11_action_button")
 theme_override_styles/hover = ExtResource("12_action_button_hover")
@@ -76,7 +76,7 @@ text = "Normal"
 icon = ExtResource("5_size64")
 
 [node name="GenerateLargeButton" type="Button" parent="ControllerUI/TopUI/TopUIMargin/TopUIContent/CreateMapControls/MapSizeButtons"]
-custom_minimum_size = Vector2(116, 0)
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 theme_override_styles/normal = ExtResource("11_action_button")
 theme_override_styles/hover = ExtResource("12_action_button_hover")
